@@ -1,8 +1,9 @@
 ---
 plan: morning-digest
-status: ready
+status: done
 owner: rook
 opened: 2026-10-29
+closed: 2026-11-02
 ---
 
 # Morning digest
@@ -77,3 +78,21 @@ page again with `LANE_MARKER` unset (the banner reads "no marker set") and uploa
 link. Move this plan to `docs/plans/done/` with its issue list.
 
 Done when: the preview link no longer shows the lane marker.
+
+## Issues
+
+| # | Issue | Blocked by | Worker | Closed |
+|---|-------|-----------|--------|--------|
+| 1 | Digest types: DigestRow and readNight signature | — | claude-code · opus-5.5 · low | 2026-11-02 |
+| 2 | Run log reader | #1 | claude-code · opus-5.5 · low | 2026-11-02 |
+| 3 | Digest page: GET /digest/:night | #1 | claude-code · sonnet-5.5 · default | 2026-11-02 |
+| 4 | Digest JSON: GET /api/digest/:night | #1 | claude-code · haiku-5.5 · default | 2026-11-02 |
+| 5 | Status board links each night to its digest | #1 | claude-code · sonnet-5.5 · default | 2026-11-02 |
+| 6 | Route tests for the digest page and JSON | #1 | claude-code · haiku-5.5 · default | 2026-11-02 |
+| 7 | Preview for review | #3 | claude-code · opus-5.5 · low | 2026-11-02 |
+| 8 | Clean up the preview | #7 | claude-code · opus-5.5 · low | 2026-11-02 |
+
+#7 was closed when the link was sent, before the review was in, and reopened until the reviewer
+had looked. The preview is deployed by `.github/workflows/preview.yml` from a build artifact, never
+committed; the marker comes from the repo variable `LANE_MARKER`, which was deleted for the clean
+upload.
