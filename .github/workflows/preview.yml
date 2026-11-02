@@ -1,0 +1,40 @@
+# Plan morning-digest § 3 and § 4: the preview for review (ADR 0003).
+# Runs only by hand. Saves /digest/2026-10-28 as one HTML file and deploys it to GitHub Pages
+# as a build artifact, so the preview is never committed to the repo.
+# The banner shows the repo variable LANE_MARKER; delete the variable and run again to take the
+# marker off the same link.
+name: preview
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: corepack enable && pnpm install --frozen-lockfile
+      - run: pnpm preview:save /digest/2026-10-28 site/index.html
+        env:
+          LANE_MARKER: ${{ vars.LANE_MARKER }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+          retention-days: 1
+      - id: deployment
+        uses: actions/deploy-pages@v4
